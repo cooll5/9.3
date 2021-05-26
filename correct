@@ -1,0 +1,320 @@
+#include <iostream>
+#include <string>
+#include <ctime>
+#include <iomanip>
+using namespace std;
+struct Sluzbuvets
+{
+    string LastName;
+    string Initials;
+    string Posada;
+    int Year;
+    int Oklad;
+};
+void Create(Sluzbuvets* arr,int &size);
+void AutoCreate(Sluzbuvets* arr, int& size);
+void StartMenu(Sluzbuvets* arr, int& size);
+void Print(Sluzbuvets* arr, int& size);
+Sluzbuvets* Add(Sluzbuvets* arr, int& size);
+Sluzbuvets* Remove(Sluzbuvets* arr, int& size);
+void Change(Sluzbuvets* arr, int& size);
+void Find(Sluzbuvets* arr, int& size);
+void Sort(Sluzbuvets* arr, int& size);
+
+int main()
+{
+    cout << "Enter list size:"; int size; cin >> size;
+    Sluzbuvets* arr = new Sluzbuvets[size];
+    StartMenu(arr,size);
+    system("pause");
+    return 0;
+}
+void StartMenu(Sluzbuvets* arr, int& size)
+{
+    bool initialized = false;
+    int ch;
+    do
+    {
+        {
+            cout << "=======Menu=======" << endl;
+            cout << "1.Create list" << endl;
+            cout << "2.Print list" << endl;
+            cout << "3.Add" << endl;
+            cout << "4.Remove" << endl;
+            cout << "5.Change" << endl;
+            cout << "6.Sort" << endl;
+            cout << "7.Search" << endl;
+            cout << "8.Clear screen" << endl;
+            cout << "9.or any else number - Exit" << endl;
+            cout << "==================" << endl;
+        }
+        cout << "Enter you choice: "; cin >> ch;
+        switch (ch)
+        {
+
+            case 1:
+            {
+                initialized = true;
+                AutoCreate(arr, size);
+                break;
+            }
+            case 2:
+            {
+                if (!initialized)
+                    cout << "You try to do operatons with a not initialized array!" << endl;
+                else  Print(arr, size);
+
+                break;
+            }
+            case 3:
+            {
+                if (!initialized)
+                    cout << "You try to do operatons with a not initialized array!" << endl;
+                else arr = Add(arr, size);
+                break;
+            }
+            case 4:
+            {
+                if (!initialized)
+                    cout << "You try to do operatons with a not initialized array!" << endl;
+                else arr = Remove(arr, size);
+                break;
+            }
+            case 5:
+            {
+                if (!initialized)
+                    cout << "You try to do operatons with a not initialized array!" << endl;
+                else Change(arr, size);
+                break;
+            }
+            case 6:
+            {
+                if (!initialized)
+                    cout << "You try to do operatons with a not initialized array!" << endl;
+                else Sort(arr, size);
+                break;
+            }
+            case 7:
+            {
+                if (!initialized)
+                    cout << "You try to do operatons with a not initialized array!" << endl;
+                else Find(arr, size);
+                break;
+            }
+            case 8:
+            {
+                system("cls");
+                break;
+            }
+            default:
+                break;
+        }
+    } while (ch <=9);
+}
+
+void Create(Sluzbuvets* arr, int& size)
+{
+    for (size_t i = 0; i < size; i++)
+    {
+        Sluzbuvets sl;
+        cout << "Last name: "; cin >> sl.LastName;
+        cout << "Initials: "; cin >> sl.Initials;
+        cout << "Posada: "; cin >> sl.Posada;
+        cout << "Year: "; cin >> sl.Year;
+        cout << "Fee: "; cin >> sl.Oklad;
+        arr[i] = sl;
+    }
+}
+
+void AutoCreate(Sluzbuvets* arr, int& size)
+{
+    string InitialVector[] = { "I.I","T.K","P.Y","M.O","J.Z","X,Y",
+                               "O.E","V.I","K.I","K,I","V.V","I.V","A.B","C.D" };//for debug
+    string LastNames[] = { "Petrenko","Senechko","Tsymbala"
+            ,"Nykolyak","Tkachenko","Nuchepura","Nikolaichuk","Shevchenko","Koval","Kuchak",
+                           "Nelko","Hrechuk",
+                           "Lesyn","Matskiv","Makovetska","Marchyshyn","Palyvoda" };//im too lazy to fill the arrayy by hands every debug iteration
+    string posada[] = { "Manager","Worker","Boss","SalesManager","Director","Architect","System Admin","TeamLead","Trainee","Junior Dev","Frontend Dev" };
+    for (size_t i = 0; i < size; i++)
+    {
+        arr[i].Initials = InitialVector[rand() % 14];
+        arr[i].LastName = LastNames[rand() % 17];
+        arr[i].Oklad = (4000 + rand() % 7000); arr[i].Oklad -=(arr[i].Oklad % 100);
+        arr[i].Posada = posada[rand() % 11];
+        arr[i].Year = 1995 + rand() % 25;
+    }
+}
+
+void Print(Sluzbuvets* arr, int& size)
+{
+    cout << "=================================================================" << endl;
+    cout << "N\t|Last Name     |Initials|Posada        |Fee\t|Year\t|" << endl;
+    cout << "=================================================================" << endl;
+    for (size_t i = 0; i < size; i++)
+    {
+        cout << i << "\t|";
+        cout <<  arr[i].LastName << setw(15 - arr[i].LastName.size())<< "|";
+        cout << arr[i].Initials << "\t|";
+        cout  << arr[i].Posada << setw(15 - arr[i].Posada.size())<< "|";
+        cout << arr[i].Oklad << "\t|";
+        cout << arr[i].Year << "\t|";
+        cout << endl;
+    }
+    cout << "=================================================================" << endl;
+}
+
+Sluzbuvets* Add(Sluzbuvets* arr, int& size)
+{
+    Sluzbuvets sl;
+    cout << "Last name: "; cin >> sl.LastName;
+    cout << "Initials: "; cin >> sl.Initials;
+    cout << "Posada: "; cin >> sl.Posada;
+    cout << "Year: "; cin >> sl.Year;
+    cout << "Fee: "; cin >> sl.Oklad;
+    Sluzbuvets* arr2 = new Sluzbuvets[size + 1];
+    for (size_t i = 0; i < size; i++)
+    {
+        arr2[i] = arr[i];
+    }
+    arr2[size] = sl;
+    size++;
+    return arr2;
+}
+
+Sluzbuvets* Remove(Sluzbuvets* arr, int& size)
+{
+    Sluzbuvets* arr2 = new Sluzbuvets[size - 1];
+    cout << "Enter the index of a worker which you want to remove: ";
+    int index = 0; cin >> index;
+    if (index < size)
+    {
+        cout << "=================================================================" << endl;
+        cout << "N\t|Last Name     |Initials|Posada        |Fee\t|Year\t|" << endl;
+        cout << "=================================================================" << endl;
+        cout << index << "\t|";
+        cout << arr[index].LastName << setw(15 - arr[index].LastName.size()) << "|";
+        cout << arr[index].Initials << "\t|";
+        cout << arr[index].Posada << setw(15 - arr[index].Posada.size()) << "|";
+        cout << arr[index].Oklad << "\t|";
+        cout << arr[index].Year << "\t|";
+        cout << endl;
+        cout << "=================================================================" << endl;
+
+    }
+    else cout << "There is no worker with the number " << index << endl;
+    bool moved = false;
+    for (size_t i = 0; i < size-1; i++)
+    {
+
+        if (i == index)  	moved = true;
+        if (moved)	arr2[i] = arr[i + 1];
+        else	arr2[i] = arr[i];
+    }
+    size--;
+    return arr2;
+
+}
+
+void Change(Sluzbuvets* arr, int& size)
+{
+    cout << "Enter the index of a worker which you want to change: ";
+    int index = 0; cin >> index;
+    if (index < size)
+    {
+        cout << "=================================================================" << endl;
+        cout << "N\t|Last Name     |Initials|Posada        |Fee\t|Year\t|" << endl;
+        cout << "=================================================================" << endl;
+        cout << index << "\t|";
+        cout << arr[index].LastName << setw(15 - arr[index].LastName.size()) << "|";
+        cout << arr[index].Initials << "\t|";
+        cout << arr[index].Posada << setw(15 - arr[index].Posada.size()) << "|";
+        cout << arr[index].Oklad << "\t|";
+        cout << arr[index].Year << "\t|";
+        cout << endl;
+        cout << "=================================================================" << endl;
+        Sluzbuvets sl;
+        cout << "Last name: "; cin >> sl.LastName;
+        cout << "Initials: "; cin >> sl.Initials;
+        cout << "Posada: "; cin >> sl.Posada;
+        cout << "Year: "; cin >> sl.Year;
+        cout << "Fee: "; cin >> sl.Oklad;
+        arr[index] = sl;
+    }
+    else cout << "There is no worker with the number " << index << endl;
+}
+
+void Find(Sluzbuvets* arr, int& size)
+{
+    cout << "Last name ofa worker which u want to find: ";
+    string ln; cin >> ln;
+    int index = -1;
+    for (size_t i = 0; i < size; i++)
+    {
+        if (arr[i].LastName == ln)
+        {
+            index = i;
+            break;
+        }
+    }
+    if(index != -1)
+    {
+        cout << "=================================================================" << endl;
+        cout << "N\t|Last Name     |Initials|Posada        |Fee\t|Year\t|" << endl;
+        cout << "=================================================================" << endl;
+        cout << index << "\t|";
+        cout << arr[index].LastName << setw(15 - arr[index].LastName.size()) << "|";
+        cout << arr[index].Initials << "\t|";
+        cout << arr[index].Posada << setw(15 - arr[index].Posada.size()) << "|";
+        cout << arr[index].Oklad << "\t|";
+        cout << arr[index].Year << "\t|";
+        cout << endl;
+        cout << "=================================================================" << endl;
+
+    }
+    else
+    {
+        cout << "Sorry but the worker with last name " << ln << "doe not exist in this company." << endl;
+    }
+}
+
+
+void Sort(Sluzbuvets* arr, int& size)
+{
+    system("cls");
+    cout << "========Sort Menu==========" << endl;
+    cout << "1.Sort by Last name" << endl;
+    cout << "2.Sort by fee" << endl;
+    cout << "3.Sort by year" << endl;
+    cout << "4.Exit" << endl;
+    cout << "===========================" << endl;
+    cout << "Your choice:"; int choice; cin >> choice;
+    switch (choice)
+    {
+        case 1:
+        {
+            for (size_t i = 0; i < size-1; i++)
+                for (size_t j = 0; j < size - i - 1; j++)
+                    if (arr[j].LastName[0] > arr[j + 1].LastName[0])
+                        swap(arr[j], arr[j + 1]);
+            break;
+        }
+        case 2:
+        {
+            for (size_t i = 0; i < size - 1; i++)
+                for (size_t j = 0; j < size - i - 1; j++)
+                    if (arr[j].Oklad > arr[j + 1].Oklad)
+                        swap(arr[j], arr[j + 1]);
+            break;
+        }
+        case 3:
+        {
+            for (size_t i = 0; i < size - 1; i++)
+                for (size_t j = 0; j < size - i - 1; j++)
+                    if (arr[j].Year > arr[j + 1].Year)
+                        swap(arr[j], arr[j + 1]);
+            break;
+        }
+        default:
+            return;
+    }
+}
